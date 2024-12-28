@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from sqlmodel import Field, Session, SQLModel, create_engine
+from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 
 class Hero(SQLModel, table=True):
@@ -20,6 +20,14 @@ app = FastAPI()
 @app.get("/")
 def hello():
     return {"message": "Hello World!"}
+
+
+@app.get("/heroes")
+def list_heroes():
+    with Session(engine) as session:
+        statement = select(Hero)
+        result = session.exec(statement)
+        return {"heroes": result.fetchall()}
 
 
 if __name__ == "__main__":
