@@ -9,7 +9,7 @@
 import logging
 from pathlib import Path
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlmodel import Field, SQLModel
 
 logging.basicConfig(
@@ -36,6 +36,7 @@ docker run --rm --name postgres \
 """
 database_url = "postgresql+asyncpg://developer:mysecretpassword@127.0.0.1:5432/practice"
 engine = create_async_engine(database_url)
+AsyncSession = async_sessionmaker(engine)
 
 
 async def main():
@@ -46,15 +47,12 @@ async def main():
     hero_1 = Hero(name="Deadpond (async)", secret_name="Dive Wilson (async)")
     print("Before insert:", hero_1)
 
-    async with AsyncSession(engine) as session:
+    async with AsyncSession.begin() as session:
         session.add(hero_1)
         print("After add:", hero_1)
 
         await session.commit()
         print("After commit:", hero_1)
-
-        await session.refresh(hero_1)
-        print("After refresh:", hero_1)
 
     print("After session close:", hero_1)
 
