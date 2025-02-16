@@ -1,1 +1,1 @@
-from books_api.app import app  # noqa: F401
+from books_api.rest.app import app  # noqa: F401
