@@ -1,6 +1,1 @@
-def main():
-    print("Hello from api!")
-
-
-if __name__ == "__main__":
-    main()
+from books_api.app import app  # noqa: F401
