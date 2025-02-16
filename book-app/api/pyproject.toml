@@ -5,6 +5,9 @@ description = "Book app based on iktakahiro/dddpy"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.115.8",
+    "pydantic-settings>=2.7.1",
+    "sqlalchemy[postgresql-asyncpg]>=2.0.38",
+    "sqlmodel>=0.0.22",
 ]
 
 [build-system]
