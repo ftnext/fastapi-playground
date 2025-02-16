@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
+from books_api.domain.books import Books
+
 
 class FetchBooksPort(ABC):
     @abstractmethod
-    def fetch(self):
+    async def fetch(self) -> Books:
         raise NotImplementedError
