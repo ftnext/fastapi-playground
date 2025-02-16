@@ -10,7 +10,8 @@ import logging
 from pathlib import Path
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, select
+from sqlmodel.ext.asyncio.session import AsyncSession as SQLModelAsyncSession
 
 logging.basicConfig(
     filename=Path(__file__).with_suffix(".log"),
@@ -36,7 +37,7 @@ docker run --rm --name postgres \
 """
 database_url = "postgresql+asyncpg://developer:mysecretpassword@127.0.0.1:5432/practice"
 engine = create_async_engine(database_url)
-AsyncSession = async_sessionmaker(engine)
+AsyncSession = async_sessionmaker(engine, class_=SQLModelAsyncSession)
 
 
 async def main():
@@ -51,10 +52,22 @@ async def main():
         session.add(hero_1)
         print("After add:", hero_1)
 
-        await session.commit()
-        print("After commit:", hero_1)
-
     print("After session close:", hero_1)
+    print()
+
+    print("Heroes:")
+    statement = select(Hero)
+    async with AsyncSession() as session:
+        results = await session.exec(statement)
+        for hero in results:
+            print(repr(hero))
+    print()
+
+    async with AsyncSession() as session:
+        # returns SQLAlchemy Row
+        results = await session.stream(statement)
+        async for row in results:
+            print(row[0])
 
 
 if __name__ == "__main__":
