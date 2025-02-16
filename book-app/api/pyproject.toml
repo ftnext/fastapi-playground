@@ -1,0 +1,6 @@
+[project]
+name = "books-api"
+version = "0.1.0"
+description = "Book app based on iktakahiro/dddpy"
+requires-python = ">=3.12"
+dependencies = []
