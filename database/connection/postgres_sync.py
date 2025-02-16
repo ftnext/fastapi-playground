@@ -10,7 +10,8 @@ import logging
 from pathlib import Path
 
 from sqlalchemy.orm import sessionmaker
-from sqlmodel import Field, SQLModel, create_engine
+from sqlmodel import Field, SQLModel, create_engine, select
+from sqlmodel import Session as SQLModelSession
 
 logging.basicConfig(
     filename=Path(__file__).with_suffix(".log"),
@@ -36,7 +37,7 @@ docker run --rm --name postgres \
 """
 database_url = "postgresql://developer:mysecretpassword@127.0.0.1:5432/practice"
 engine = create_engine(database_url)
-Session = sessionmaker(engine)
+Session = sessionmaker(engine, class_=SQLModelSession)
 
 if __name__ == "__main__":
     SQLModel.metadata.create_all(engine)
@@ -50,9 +51,13 @@ if __name__ == "__main__":
         print("After add:", hero_1)
         # After add: name='Deadpond' secret_name='Dive Wilson' id=None age=None
 
-        session.commit()  # Close the session
-        print("After commit:", hero_1)
-        # After commit:
-
     print("After session close:", hero_1)
     # After session close:
+    print()
+
+    print("Heroes:")
+    statement = select(Hero)
+    with Session() as session:
+        results = session.exec(statement)
+        for hero in results:
+            print(repr(hero))
