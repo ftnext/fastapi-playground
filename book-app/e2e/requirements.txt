@@ -1,2 +1,3 @@
 getgauge
 httpx
+SQLAlchemy[postgresql]
