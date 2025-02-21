@@ -58,6 +58,12 @@ def get_jsonpath_value(json_path: str):
     data_store.spec["actual"] = matches[0].value
 
 
+@step("文字列の<expected>である")
+def assert_string_value(expected: str):
+    actual = data_store.spec["actual"]
+    assert actual == expected, f"Expected {expected!r} but got {actual!r}"
+
+
 @step("整数値の<expected>である")
 def assert_int_value(expected: str):
     actual = data_store.spec["actual"]

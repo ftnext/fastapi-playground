@@ -22,7 +22,7 @@ class Book(Base):
     page = Column(Integer)
 
 
-@before_scenario
+@before_scenario("<load_books>")
 def load_books():
     with Session.begin() as session:
         session.add(
