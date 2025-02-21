@@ -1,3 +1,4 @@
 getgauge
 httpx
+jsonpath-ng
 SQLAlchemy[postgresql]

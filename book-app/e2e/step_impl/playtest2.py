@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 
 import httpx
 from getgauge.python import data_store, step
+from jsonpath_ng.ext import parse
 
 BASE_URL = os.getenv("SUT_BASE_URL")
 
@@ -41,6 +42,20 @@ def send_request():
 def get_status_code():
     response = data_store.spec["response"]
     data_store.spec["actual"] = response.status_code
+
+
+@step("レスポンスのボディが")
+def get_response_body():
+    response = data_store.spec["response"]
+    data_store.spec["response_body_json"] = response.json()
+
+
+@step("JSONのパス<json_path>に対応する値が")
+def get_jsonpath_value(json_path: str):
+    jsonpath_expr = parse(json_path)
+    response_json = data_store.spec["response_body_json"]
+    matches = jsonpath_expr.find(response_json)
+    data_store.spec["actual"] = matches[0].value
 
 
 @step("整数値の<expected>である")
