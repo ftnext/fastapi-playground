@@ -15,5 +15,5 @@ class Book(BaseModel, frozen=True):
 class Books(BaseModel):
     values: list[Book]
 
-    def __iter__(self) -> Generator[Book, None, None]:
+    def __iter__(self) -> Generator[Book, None, None]:  # type: ignore[override]
         yield from self.values

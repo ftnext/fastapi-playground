@@ -14,7 +14,7 @@ class PostgresqlDatabaseDriver(DatabaseDriver):
         statement = select(BookRecord)
         async with self.session() as session:
             results = await session.exec(statement)
-        return results
+        return [hero for hero in results]
 
 
 async_engine = create_async_engine(str(config.pg_dsn))
