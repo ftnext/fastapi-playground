@@ -17,7 +17,7 @@ $ make run
 ## Usage
 
 ```shell
-$ curl http://127.0.0.1:8000/books -H 'Content-Type: application/json' -d '{"title": "The book", "isbn": "978-3-16-148410-0", "page": 100}'
+$ curl http://127.0.0.1:8000/books --json '{"title": "The book", "isbn": "978-3-16-148410-0", "page": 100}'
 
 $ curl http://127.0.0.1:8000/books | jq .
 ```
