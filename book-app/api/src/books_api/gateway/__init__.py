@@ -16,3 +16,7 @@ class DatabaseDriver(ABC):
     @abstractmethod
     async def select_books(self) -> list[BookRecord]:
         raise NotImplementedError
+
+    @abstractmethod
+    async def insert_book(self, isbn: str, title: str, page: int) -> None:
+        raise NotImplementedError

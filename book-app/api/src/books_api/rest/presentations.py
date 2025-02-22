@@ -19,3 +19,9 @@ class BookReadModel(BaseModel):
             title=book.title,
             page=book.page,
         )
+
+
+class BookCreateRequest(BaseModel):
+    isbn: str
+    title: str
+    page: int
