@@ -12,7 +12,7 @@ class Book(BaseModel, frozen=True):
     page: int
 
 
-class Books(BaseModel):
+class Books(BaseModel, frozen=True):
     values: list[Book]
 
     def __iter__(self) -> Generator[Book, None, None]:  # type: ignore[override]
