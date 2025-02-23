@@ -1,17 +1,12 @@
-import os
-
 from getgauge.python import after_scenario, before_scenario
-from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import DeclarativeBase
+
+from .database import Session
 
 
 class Base(DeclarativeBase):
     pass
-
-
-DATABASE_URL = os.environ["DATABASE_URL"]
-engine = create_engine(DATABASE_URL, echo=True)
-Session = sessionmaker(engine)
 
 
 class Book(Base):

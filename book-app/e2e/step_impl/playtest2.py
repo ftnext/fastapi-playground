@@ -3,8 +3,12 @@ import os
 from urllib.parse import urljoin
 
 import httpx
-from getgauge.python import data_store, step
+from getgauge.python import Table, data_store, step
 from jsonpath_ng.ext import parse
+from sqlalchemy import text
+
+from .database import Session
+from .gauge_table import ProtoTable
 
 BASE_URL = os.getenv("SUT_BASE_URL")
 
@@ -58,6 +62,18 @@ def get_jsonpath_value(json_path: str):
     data_store.spec["actual"] = matches[0].value
 
 
+@step("DB<db_name>にSQL<sql>を実行した結果が")
+def execute_sql(db_name: str, sql: str):
+    with Session() as session:
+        result = session.execute(text(sql))
+        records = list(result.mappings())
+
+    headers = {"cells": list(records[0].keys())}
+    rows = [{"cells": [str(v) for v in r.values()]} for r in records]
+    proto_table = ProtoTable({"headers": headers, "rows": rows})
+    data_store.spec["actual"] = Table(proto_table)
+
+
 @step("文字列の<expected>である")
 def assert_string_value(expected: str):
     actual = data_store.spec["actual"]
@@ -69,3 +85,9 @@ def assert_int_value(expected: str):
     actual = data_store.spec["actual"]
     expected = int(expected)
     assert actual == expected, f"Expected {expected!r} but got {actual!r}"
+
+
+@step("テーブル<expected>である")
+def assert_table(expected: Table):
+    actual = data_store.spec["actual"]
+    assert actual == expected, f"Expected {expected} but got {actual}"
