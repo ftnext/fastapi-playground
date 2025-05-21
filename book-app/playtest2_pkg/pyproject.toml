@@ -1,0 +1,5 @@
+[project]
+name = "playtest2"
+version = "0.0.1"
+
+dependencies = ["getgauge", "httpx", "jsonpath-ng", "SQLAlchemy[postgresql]"]
