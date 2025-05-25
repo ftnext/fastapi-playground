@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from ninja import NinjaAPI, Schema
 
 from .models import Book
@@ -10,8 +12,14 @@ def hello(request):
     return "Hello world"
 
 
+class BookIn(Schema):
+    isbn: str
+    title: str
+    page: int
+
+
 class BookOut(Schema):
-    id: str
+    id: UUID
     isbn: str
     title: str
     page: int
@@ -21,3 +29,9 @@ class BookOut(Schema):
 def get_books(request):
     books_qs = Book.objects.all()
     return books_qs
+
+
+@api.post("/books", response=BookOut)
+def create_book(request, payload: BookIn):
+    book = Book.objects.create(**payload.dict())
+    return book
