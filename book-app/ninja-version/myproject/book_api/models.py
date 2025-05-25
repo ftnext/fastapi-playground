@@ -1,3 +1,14 @@
 from django.db import models
 
-# Create your models here.
+
+class Book(models.Model):
+    id = models.UUIDField(primary_key=True)
+    isbn = models.CharField(max_length=17, unique=True)
+    title = models.CharField(max_length=255)
+    page = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.title} ({self.isbn})"
+
+    class Meta:
+        db_table = "book"
