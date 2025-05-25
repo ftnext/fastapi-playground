@@ -1,33 +1,23 @@
-# Specification Heading
+# リクエストとレスポンスをロギングするサンプルアプリのテスト
 
-This is an executable specification file. This file follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
+## GETリクエストが送れる
 
-To execute this specification, run
+* パス"/"に
+* メソッド"GET"で
+* リクエストを送る
 
-    gauge run specs
+* レスポンスのボディが
+* JSONのパス"$.message"に対応する値が
+* 文字列の"Hello World"である
 
+## POSTリクエストが送れる
 
-* Vowels in English language are "aeiou".
+* パス"/"に
+* メソッド"POST"で
+* メディアタイプ"application/json"で
+* JSON"[1,2,3]"で
+* リクエストを送る
 
-## Vowel counts in single word
-
-tags: single word
-
-* The word "gauge" has "3" vowels.
-
-
-## Vowel counts in multiple word
-
-This is the second scenario in this specification
-
-Here's a step that takes a table
-
-* Almost all words have vowels
-     |Word  |Vowel Count|
-     |------|-----------|
-     |Gauge |3          |
-     |Mingle|2          |
-     |Snap  |1          |
-     |GoCD  |1          |
-     |Rhythm|0          |
+* レスポンスのボディが
+* JSONのパス"$.sum"に対応する値が
+* 整数値の"6"である
