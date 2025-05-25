@@ -31,7 +31,7 @@ def get_books(request):
     return books_qs
 
 
-@api.post("/books", response=BookOut)
+@api.post("/books", response={201: BookOut})
 def create_book(request, payload: BookIn):
     book = Book.objects.create(**payload.dict())
     return book
