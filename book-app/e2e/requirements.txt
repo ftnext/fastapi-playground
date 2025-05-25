@@ -1,4 +1,2 @@
-getgauge
-httpx
-jsonpath-ng
+playtest2
 SQLAlchemy[postgresql]
