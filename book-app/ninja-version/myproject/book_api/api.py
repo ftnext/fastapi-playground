@@ -26,9 +26,9 @@ class BookOut(Schema):
 
 
 @api.get("/books", response=list[BookOut])
-def get_books(request):
-    books_qs = Book.objects.all()
-    return books_qs
+async def get_books(request):
+    all_books = [book async for book in Book.objects.all()]
+    return all_books
 
 
 @api.post("/books", response={201: BookOut})
