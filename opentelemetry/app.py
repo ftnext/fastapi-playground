@@ -20,13 +20,14 @@ set_tracer_provider(TracerProvider())
 get_tracer_provider().add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
 
 app = FastAPI()
-instrumentor = FastAPIInstrumentor()
-instrumentor.instrument_app(app)
 
 
 @app.get("/")
 async def hello():
     return {"message": "Hello World"}
+
+
+FastAPIInstrumentor.instrument_app(app)
 
 
 if __name__ == "__main__":
