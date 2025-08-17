@@ -22,6 +22,7 @@ async def get_github_discussion_count(owner: str, name: str, answered: bool):
                 "variables": {"name": name, "owner": owner, "answered": answered},
             },
             headers={"Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"},
+            timeout=httpx.Timeout(5, read=10),
         )
         response.raise_for_status()
         return response.json()
