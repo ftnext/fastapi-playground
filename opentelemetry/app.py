@@ -15,9 +15,16 @@ from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
 )
 from opentelemetry.trace import get_tracer_provider, set_tracer_provider
+from pydantic import BaseModel
 
 set_tracer_provider(TracerProvider())
 get_tracer_provider().add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+
+
+class Item(BaseModel):
+    name: str
+    price: float
+
 
 app = FastAPI()
 
@@ -27,8 +34,12 @@ async def hello():
     return {"message": "Hello World"}
 
 
-FastAPIInstrumentor.instrument_app(app)
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
 
+
+FastAPIInstrumentor.instrument_app(app)
 
 if __name__ == "__main__":
     import uvicorn
