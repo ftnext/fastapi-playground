@@ -1,2 +1,2 @@
 playtest2
-SQLAlchemy[postgresql]
+SQLAlchemy[postgresql_psycopgbinary]
