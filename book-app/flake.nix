@@ -15,9 +15,9 @@
     in {
       devShells.${system}.default = pkgs.mkShell {
         packages = [
-          pkgs.hello
+          pkgs.docker
+          pkgs.postgresql
         ];
       };
-      packages.${system}.default = pkgs.hello;
     };
 }
