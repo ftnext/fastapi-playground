@@ -1,0 +1,9 @@
+[project]
+name = "starlette-ghsa-86qp-5c8j-p5mr"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.136.1",
+    "httpx>=0.28.1",
+    "starlette==1.0.0",
+]
