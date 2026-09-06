@@ -6,24 +6,27 @@
 #     "uvicorn>=0.52.4",
 # ]
 # ///
-import asyncio
 import os
+from contextlib import asynccontextmanager
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, ValidationError
 from supabase import create_async_client as create_supabase_async_client
 from supabase_auth.errors import AuthError
 
-app = FastAPI()
 
-client = asyncio.run(
-    create_supabase_async_client(
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.supabase_client = await create_supabase_async_client(
         os.environ["SUPABASE_URL"], os.environ["SUPABASE_PUBLISHABLE_KEY"]
     )
-)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 bearer = HTTPBearer()
 
@@ -34,10 +37,13 @@ class CurrentUser(BaseModel):
 
 
 async def get_claims(
+    request: Request,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(bearer)],
 ) -> dict:
     try:
-        claims = await client.auth.get_claims(credentials.credentials)
+        claims = await request.app.state.supabase_client.auth.get_claims(
+            credentials.credentials
+        )
     except (AuthError, ValidationError, KeyError) as exc:
         raise HTTPException(
             status_code=401,
