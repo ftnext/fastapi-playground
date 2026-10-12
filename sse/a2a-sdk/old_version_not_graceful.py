@@ -14,7 +14,13 @@ from a2a.server.events import EventQueue
 from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.routes import create_agent_card_routes, create_jsonrpc_routes
 from a2a.server.tasks import InMemoryTaskStore, TaskUpdater
-from a2a.types import AgentCapabilities, AgentCard, AgentInterface, AgentSkill
+from a2a.types import (
+    AgentCapabilities,
+    AgentCard,
+    AgentInterface,
+    AgentSkill,
+    TaskState,
+)
 from starlette.applications import Starlette
 
 
@@ -27,6 +33,7 @@ class TickAgent(AgentExecutor):
             await event_queue.enqueue_event(task)
 
         task_updater = TaskUpdater(event_queue, task.id, task.context_id)
+        await task_updater.update_status(state=TaskState.TASK_STATE_WORKING)
 
         for i in range(1, 11):
             await asyncio.sleep(1)
