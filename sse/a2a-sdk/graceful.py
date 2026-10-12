@@ -54,6 +54,7 @@ skill = AgentSkill(
     id="tick_bot",
     name="Tick Bot",
     description="An example agent that sends ticks",
+    tags=["tick"],
     input_modes=["text/plain"],
     output_modes=["text/plain"],
 )
