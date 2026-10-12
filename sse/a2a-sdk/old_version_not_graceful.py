@@ -24,7 +24,7 @@ from a2a.types import (
 from starlette.applications import Starlette
 
 
-class TickAgent(AgentExecutor):
+class TickAgentExecutor(AgentExecutor):
     async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:
         if context.current_task:
             task = context.current_task
@@ -76,7 +76,7 @@ public_agent_card = AgentCard(
 )
 
 handler = DefaultRequestHandler(
-    agent_executor=TickAgent(),
+    agent_executor=TickAgentExecutor(),
     task_store=InMemoryTaskStore(),
     agent_card=public_agent_card,
 )
